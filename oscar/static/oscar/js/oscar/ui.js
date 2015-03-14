@@ -70,6 +70,11 @@ var oscar = (function(o, $) {
             // prevent multiple submissions
             $('form[data-behaviours~="lock"]').submit(o.forms.submitIfNotLocked);
 
+            $('#id_child_id').on("change", function () {
+                var price = $('option[value=' + $(this).val() + ']', this).data("description");
+                $(".price_color").text(price);
+            });
+
             // Disable buttons when they are clicked and show a "loading" message taken from the
             // data-loading-text attribute (http://getbootstrap.com/2.3.2/javascript.html#buttons).
             // Do not disable if button is inside a form with invalid fields.
