@@ -1,0 +1,25 @@
+{% load currency_filters %}
+{% load i18n %}
+
+{% if session.min_price.exists %}
+    {% if session.min_price.excl_tax == 0 %}
+        {% trans "Free" %}
+    {% elif session.min_price.is_tax_known %}
+        {{ session.min_price.incl_tax|currency:session.min_price.currency }}
+    {% else %}
+        {{ session.min_price.excl_tax|currency:session.min_price.currency }}
+    {% endif %}
+
+    {% if session.max_price.exists and session.max_price != session.min_price %}
+       -
+        {% if session.max_price.excl_tax == 0 %}
+            {% trans "Free" %}
+        {% elif session.max_price.is_tax_known %}
+            {{ session.max_price.incl_tax|currency:session.max_price.currency }}
+        {% else %}
+            {{ session.max_price.excl_tax|currency:session.max_price.currency }}
+        {% endif %}
+    {% endif %}
+{% else %}
+    &nbsp;
+{% endif %}
