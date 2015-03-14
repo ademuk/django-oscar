@@ -260,12 +260,15 @@ class AdvancedSelect(forms.Select):
     for whether the widget is disabled.
     """
 
-    def __init__(self, attrs=None, choices=(), disabled_values=()):
+    def __init__(self, attrs=None, choices=(), disabled_values=(), descriptions=None):
         self.disabled_values = set(force_text(v) for v in disabled_values)
+        self.descriptions = descriptions
         super(AdvancedSelect, self).__init__(attrs, choices)
 
     def render_option(self, selected_choices, option_value, option_label):
+        description = self.descriptions.get(option_value)
         option_value = force_text(option_value)
+
         if option_value in self.disabled_values:
             selected_html = mark_safe(' disabled="disabled"')
         elif option_value in selected_choices:
@@ -275,8 +278,9 @@ class AdvancedSelect(forms.Select):
                 selected_choices.remove(option_value)
         else:
             selected_html = ''
-        return format_html(u'<option value="{0}"{1}>{2}</option>',
+        return format_html(u'<option value="{0}" data-description="{1}"{2}>{3}</option>',
                            option_value,
+                           description,
                            selected_html,
                            force_text(option_label))
 
