@@ -580,6 +580,14 @@ class AbstractProduct(models.Model):
 
     # Wrappers for child products
 
+    def get_full_title(self):
+        """
+        Return a product's title preceeded with parent's if present
+        """
+        if self.title and self.parent:
+            return "%s - %s" % (self.parent, self.title)
+        return self.get_title()
+
     def get_title(self):
         """
         Return a product's title or it's parent's title if it has no title

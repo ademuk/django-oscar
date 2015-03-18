@@ -791,7 +791,7 @@ class AbstractLine(models.Model):
 
     @property
     def description(self):
-        d = str(self.product)
+        d = self.product.get_full_title()
         ops = []
         for attribute in self.attributes.all():
             ops.append("%s = '%s'" % (attribute.option.name, attribute.value))
